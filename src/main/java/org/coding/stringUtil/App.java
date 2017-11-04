@@ -5,6 +5,25 @@ public class App {
 	public static boolean considerOnlyAscii = false;
 
 	/**
+	 * In the programming language of your choice, write a method that modifies a
+	 * string using the following rules:
+	 * 
+	 * 1. Each word in the input string is replaced with the following: the first
+	 * letter of the word, the count of distinct letters between the first and last
+	 * letter, and the last letter of the word. For example, "Automotive" would be
+	 * replaced by "A6e".
+	 * 
+	 * 2. A "word" is defined as a sequence of alphabetic characters, delimited by
+	 * any non-alphabetic characters.
+	 * 
+	 * 3. Any non-alphabetic character in the input string should appear in the
+	 * output string in its original relative location.
+	 * 
+	 * We are looking for: accuracy - 50% efficiency - 15% solution completeness -
+	 * 10% clean code? readable? concise? straight forward? - 25% code documented -
+	 * bonus 5% test case included? - bonus 5% Please include this problem
+	 * description in the comment at the top of your solution. The problem is
+	 * designed to take approximately 1-2 hours.
 	 * 
 	 * @param in
 	 * @return
@@ -15,7 +34,7 @@ public class App {
 		StringBuilder sb = new StringBuilder();
 		int start = 0, len = in.length();
 		for (int i = 0; i < len; i++) {
-			if (isAlphabeticChar(in.charAt(i))) {// Lets examine if its start of word 
+			if (isAlphabeticChar(in.charAt(i))) {// Lets examine if its start of word
 				start = i;
 				while (i < len && isAlphabeticChar(in.charAt(i))) {
 					i++;
@@ -48,7 +67,11 @@ public class App {
 		String modified = "" + str.charAt(start) + uniqCharCnt + str.charAt(end);
 		return stringBuilder.append(modified).toString();
 	}
-
+	/**
+	 *  User can use {@code App.considerOnlyAscii} flag to consider ascii or more general alphabet
+	 * @param c
+	 * @return
+	 */
 	static boolean isAlphabeticChar(char c) {
 		if (App.considerOnlyAscii) {
 			if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) { // A - 65, Z - 90 a - 97 z- 122
