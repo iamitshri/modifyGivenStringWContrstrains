@@ -15,17 +15,15 @@ public class App {
 		StringBuilder sb = new StringBuilder();
 		int start = 0, len = in.length();
 		for (int i = 0; i < len; i++) {
-			if (isAlphabeticChar(in.charAt(i))) {// Lets examine if char is alphabet
+			if (isAlphabeticChar(in.charAt(i))) {// Lets examine if its start of word 
 				start = i;
 				while (i < len && isAlphabeticChar(in.charAt(i))) {
 					i++;
 				}
 				sb.append(getModifiedString(in, start, i - 1));// either max len reached or non-word char found
-				if (i < len) {
-					sb.append(in.charAt(i));// store the non-word character
-				}
-			} else {
-				sb.append(in.charAt(i));
+			}
+			if (i < len) {
+				sb.append(in.charAt(i));// store the non-word character
 			}
 		}
 		return sb.toString();
