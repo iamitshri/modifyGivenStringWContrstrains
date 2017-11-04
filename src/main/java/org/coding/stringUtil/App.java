@@ -1,57 +1,65 @@
 package org.coding.stringUtil;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class App {
 
-	static String convertString(String in) {
-		String result = "";
-		if (in == null || in.isEmpty())
-			return result;
+	public static boolean considerOnlyAscii = false;
 
-		int start = 0, end = 0, len = in.length(), i = 0;
-		while (i < len) {
-			// stop if char is alphabet
-			start = i;
-			if (isAsciiAlphabet(in.charAt(i))) {
-				while (i < len && isAsciiAlphabet(in.charAt(i))) {
+	/**
+	 * 
+	 * @param in
+	 * @return
+	 */
+	static String convertString(String in) {
+		if (in == null || in.isEmpty()) // we could add a check for a string with only whitespaces
+			return "";
+		StringBuilder sb = new StringBuilder();
+		int start = 0, len = in.length();
+		for (int i = 0; i < len; i++) {
+			if (isAlphabeticChar(in.charAt(i))) {// Lets examine if char is alphabet
+				start = i;
+				while (i < len && isAlphabeticChar(in.charAt(i))) {
 					i++;
 				}
-				// either max len reached or non-word char found
-				end = i - 1;
+				sb.append(getModifiedString(in, start, i - 1));// either max len reached or non-word char found
+				if (i < len) {
+					sb.append(in.charAt(i));// store the non-word character
+				}
+			} else {
+				sb.append(in.charAt(i));
 			}
-
-			i++; // iterate over chars
 		}
-		return result;
+		return sb.toString();
 	}
 
-	static boolean isAsciiAlphabet(char c) {
-		// A - 65, Z - 90
-		// a - 97 z- 122
-		if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
-			return true;
+	static String getModifiedString(String str, int start, int end) {
+		StringBuilder stringBuilder = new StringBuilder();
+		if (start > end || str == null || str.isEmpty() || start >= str.length() || end >= str.length()) {
+			return stringBuilder.toString();
 		}
-		return false;
+		// "a"
+		if (start == end) {
+			return stringBuilder.append(str.charAt(start)).toString();
+		}
+		// "ab"
+		if (end - start == 1) {
+			String modified = str.charAt(start) + "0" + str.charAt(end);
+			return stringBuilder.append(modified).toString();
+		}
+		String sub = str.substring(start + 1, end);
+		long uniqCharCnt = sub.chars().distinct().count();
+		String modified = "" + str.charAt(start) + uniqCharCnt + str.charAt(end);
+		return stringBuilder.append(modified).toString();
 	}
 
-	static long findDistinctCharacters(String str, int start, int end) {
-		int last = -1;
-		if (str == null || str.isEmpty() || start > end || end > str.length()) {
-			return last;
-		}
-		if (end == str.length()) {
-			last = end;
+	static boolean isAlphabeticChar(char c) {
+		if (App.considerOnlyAscii) {
+			if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) { // A - 65, Z - 90 a - 97 z- 122
+				return true;
+			}
+			return false;
 		} else {
-			last = end + 1;
+			return Character.isAlphabetic(c);
 		}
-		String sub = str.substring(start, last);
-		return sub.chars().distinct().count();
 	}
 
-	public static void main(String[] args) {
-		System.out.println(findDistinctCharacters("bbbb13add", 0, 9));
-	}
 }
